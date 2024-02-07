@@ -1,0 +1,22 @@
+{
+  "name": "fan-filter-cam",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/GameChangerInteractive/fan-filter-cam.git",
+  "author": "Adam Gneiting <agneiting@xcite-interactive.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k \"yarn dev:mobile\"",
+    "build": "yarn build:mobile",
+    "install:mobile": "cd mobile && yarn",
+    "dev:mobile": "cd mobile && yarn dev",
+    "lint": "yarn lint:mobile",
+    "lint:mobile": "cd mobile",
+    "build:mobile": "cd mobile && yarn build",
+    "postinstall": "yarn install:mobile"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0"
+  }
+}

@@ -1,0 +1,38 @@
+.filter-button {
+  z-index: 1;
+  padding: 0px 0px 0px 0px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ffffff00;
+  margin: 6px 6px;
+  cursor: pointer;
+}
+
+.filter-background {
+  background: #00000066; 
+  position: fixed; 
+  left: 0px; 
+  height:100%; 
+  width:50px; 
+  text-align: left; 
+  z-index: 1;
+}
+
+#actionButton {
+  /* change color of action button */
+  background-color: #007aff;
+}
+@media only screen 
+and (min-device-width: 375px) 
+and (max-device-width: 812px) 
+and (-webkit-min-device-pixel-ratio: 3)
+and (orientation: landscape) {
+  
+  .recorder-container {
+    /* move recorder button to side in landscape on mobile */
+    left: unset;
+    transform: unset;
+    right: 3vw;
+   }
+  
+}

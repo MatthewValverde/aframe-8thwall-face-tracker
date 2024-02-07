@@ -1,0 +1,118 @@
+version: 2.1
+
+parameters:
+  env:
+    type: string
+    default: "none"
+  specify:
+    type: string
+    default: "none"
+  apiUrl:
+    type: string
+    default: "none"
+  script_url:
+    type: string
+    default: AZURE_BLOB_SCRIPT_PATH
+
+executors:
+  ffc_executor:
+    docker:
+      - image: gamechangerinteractive/electron
+  az_executor:
+    docker:
+     - image: mcr.microsoft.com/azure-cli
+
+orbs:
+  azure-cli: circleci/azure-cli@1.2.0
+
+jobs:
+  build:
+    executor: ffc_executor
+    environment:
+      - GC_CLIENTID: xeo
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "2a:db:a9:0a:b3:01:98:44:30:40:cf:66:56:5e:06:9e"
+      - checkout
+      - restore_cache:
+          key: cache-{{ checksum "package.json" }}-{{ checksum "mobile/package.json" }}
+      - run: |
+          source <(curl -s https://games.gamechanger.studio/branch.sh)
+          sed -i.bak s/{{BRANCH}}/$GC_BRANCH/g common.ts
+          sed -i.bak s/{{BUILD_NUM}}/$CIRCLE_BUILD_NUM/g common.ts
+      - run: |
+          yarn
+      - save_cache:
+          key: cache-{{ checksum "package.json" }}-{{ checksum "mobile/package.json" }}
+          paths:
+            - node_modules
+            - mobile/node_modules
+      - run: yarn lint
+      - run: yarn build
+      - run: mv mobile/www fan-filter-cam
+      - store_artifacts:
+          path: fan-filter-cam
+      - persist_to_workspace:
+          root: fan-filter-cam
+          paths:
+            - ./
+
+  azure_deploy:
+    executor: az_executor
+    steps:
+      - attach_workspace:
+          at: fan-filter-cam
+      - azure-cli/login-with-service-principal
+      - run:
+          name: Upload changed files to Azure Storage
+          command: |
+            set -x
+            AZURE_BLOB_SCRIPT_CMD=(bash ./azure-blob-md5-sync -c '$web' -l fan-filter-cam -r 'fan-filter-cam' -v yes)
+            wget --header "Circle-Token: $CIRCLE_TOKEN" "$<< pipeline.parameters.script_url >>"
+            echo "${AZURE_BLOB_SCRIPT_CMD[@]}"
+            "${AZURE_BLOB_SCRIPT_CMD[@]}"
+
+  azure_deploy_api:
+    executor: az_executor
+    steps:
+      - attach_workspace:
+          at: fan-filter-cam
+      - azure-cli/login-with-service-principal
+      - run:
+          name: Upload changed files to Azure Storage
+          command: |
+            set -x
+            AZURE_BLOB_SCRIPT_CMD=(bash ./azure-blob-md5-sync -c '$web' -l fan-filter-cam -r 'fan-filter-cam' -e '<< pipeline.parameters.env >>' -p '<< pipeline.parameters.specify >>' -v yes)
+            wget --header "Circle-Token: $CIRCLE_TOKEN" "$<< pipeline.parameters.script_url >>"
+            echo "${AZURE_BLOB_SCRIPT_CMD[@]}"
+            "${AZURE_BLOB_SCRIPT_CMD[@]}"
+
+workflows:
+  version: 2
+  build-and-deploy:
+    unless:
+      equal: [api, <<pipeline.trigger_source>>]
+    jobs:
+      - build:
+          context:
+            - Globals
+      - azure_deploy:
+          context:
+            - Globals
+            - AzureStorage
+          requires:
+            - build
+  api-build-deploy:
+    when:
+      equal: [api, <<pipeline.trigger_source>>]
+    jobs:
+      - build:
+          context:
+            - Globals
+      - azure_deploy_api:
+          context:
+            - Globals
+            - AzureStorage
+          requires:
+            - build

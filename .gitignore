@@ -1,0 +1,7 @@
+.idea
+node_modules
+.DS_Store
+www
+admin/app/index.js
+admin/dist
+yarn-error.log

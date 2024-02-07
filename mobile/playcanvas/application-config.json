@@ -1,0 +1,180 @@
+{
+    "title": "Fan Filter Cam",
+    "description": "Face Tracker",
+    "clients": [
+        {
+            "id": "xeo-japan",
+            "packs": [
+                "xeo-japan"
+            ]
+        },
+        {
+            "id": "maestromedia",
+            "packs": [
+                "maestromedia"
+            ]
+        },
+        {
+            "id": "cross-sync",
+            "packs": [
+                "cross-sync"
+            ]
+        },
+        {
+            "id": "xcite-arcade",
+            "packs": [
+                "xcite-arcade"
+            ]
+        },
+        {
+            "id": "ham-fighters",
+            "packs": [
+                "ham-fighters"
+            ]
+        },
+        {
+            "id": "houston-texans",
+            "packs": [
+                "houston-texans"
+            ]
+        },
+        {
+            "id": "orix-buffaloes",
+            "packs": [
+                "orix-buffaloes"
+            ]
+        },
+        {
+            "id": "seibu-lions",
+            "packs": [
+                "seibu-lions"
+            ]
+        },
+        {
+            "id": "uga",
+            "packs": [
+                "uga"
+            ]
+        },
+        {
+            "id": "uod",
+            "packs": [
+                "uod"
+            ]
+        },
+        {
+            "id": "uoi",
+            "packs": [
+                "uoi"
+            ]
+        },
+        {
+            "id": "uta",
+            "packs": [
+                "uta"
+            ]
+        },
+        {
+            "id": "wake-forest",
+            "packs": [
+                "valentines"
+            ]
+        },
+        {
+            "id": "test2",
+            "packs": [
+                "holidays"
+            ]
+        },
+        {
+            "id": "dev-matthew",
+            "packs": [
+                "dev-matthew"
+            ]
+        },
+        {
+            "id": "xcite-4",
+            "packs": [
+                "valentines"
+            ]
+        },
+        {
+            "id": "clemsoncoca-colafankit",
+            "packs": [
+                "clemsoncoca-colafankit"
+            ]
+        },
+        {
+            "id": "cokedw1",
+            "packs": [
+                "cokedw1"
+            ]
+        },
+        {
+            "id": "cokedw2",
+            "packs": [
+                "cokedw1"
+            ]
+        },
+        {
+            "id": "cokedw3",
+            "packs": [
+                "cokedw1"
+            ]
+        },
+        {
+            "id": "cokedw4",
+            "packs": [
+                "cokedw1"
+            ]
+        },
+        {
+            "id": "cokedw5",
+            "packs": [
+                "cokedw1"
+            ]
+        },
+        {
+            "id": "cokedw6",
+            "packs": [
+                "cokedw1"
+            ]
+        },
+        {
+            "id": "cokedw7",
+            "packs": [
+                "cokedw1"
+            ]
+        },
+        {
+            "id": "cokedw8",
+            "packs": [
+                "cokedw1"
+            ]
+        },
+        {
+            "id": "cokedw9",
+            "packs": [
+                "cokedw1"
+            ]
+        },
+        {
+            "id": "cokedw10",
+            "packs": [
+                "cokedw1"
+            ]
+        },
+        {
+            "id": "cokedw11",
+            "packs": [
+                "cokedw1"
+            ]
+        },
+        {
+            "id": "xcitegeneral",
+            "packs": [
+                "xcitegeneral"
+            ]
+        }
+    ]
+}

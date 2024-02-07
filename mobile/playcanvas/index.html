@@ -1,0 +1,1413 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="8thwall:renderer" content="aframe:1.2.0">
+    <meta name="8thwall:package" content="@8thwall.xrextras">
+    <meta name="8thwall:package" content="@8thwall.landing-page">
+
+    <title>FFC</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <script src="https://cdn.8thwall.com/web/aframe/8frame-1.2.0.min.js"></script>
+    <script src="https://cdn.8thwall.com/web/xrextras/xrextras.js"></script>
+    <script
+        src="https://apps.8thwall.com/xrweb?appKey=kJdrzpze9rh3e1OMc3FGr5IFlmgJwaInNwrBMyMQsEyCqzXfq1FUpu6Qqjoj6PiXrlu92N"></script>
+
+    <!--<script src="//cdn.8thwall.com/web/aframe/aframe-extras-6.1.1.min.js"></script>-->
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-WQ5GJH3');</script>
+    <!-- End Google Tag Manager -->
+
+    <style>
+        .filter-button {
+            z-index: 2;
+            background: #00000000 !important;
+        }
+
+        .camera-switch-filter-button {
+            background-image: url('https://xcitegeneral.azureedge.net/xeo/fan-filter-cam/ui/switch-camera-light.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-color: #ffffff00;
+            z-index: 2;
+            position: fixed;
+            bottom: -100px;
+            right: 1vmin;
+            width: 10vmin;
+            height: 10vmin;
+            max-width: 10vmin;
+            max-height: 10vmin;
+            cursor: pointer;
+        }
+
+        .filter_button_icon {
+            z-index: 2;
+            width: 12vmin;
+            height: 12vmin;
+        }
+
+        .subfilter_button {
+            z-index: 2;
+            width: 12vmin;
+            height: 12vmin;
+            background: #00000000 !important;
+            cursor: pointer;
+            padding-right: 1vmin;
+        }
+
+        .subfilter_button_icon {
+            z-index: 2;
+            width: 12vmin;
+            height: 12vmin;
+        }
+
+        .filter_category_button_new {
+            z-index: 2;
+            cursor: pointer;
+            background: #00000000 !important;
+            margin: 0.5vmin 0.5vmin;
+            width: 7vh;
+            padding: 1vh 1vw;
+        }
+
+        .filter_category_container_new {
+            z-index: 2;
+            background: #00000000 !important;
+            justify-items: center;
+            align-items: center;
+            border-radius: 0.5vmax;
+            overflow: hidden;
+        }
+
+        .subcat_horizontal_parent {
+            z-index: 2;
+            background: #00000000 !important;
+            display: flex;
+            flex-direction: row;
+            /* or 'row', 'row dense', 'column dense' */
+            width: 100%;
+            height: 100%;
+        }
+
+        .subcat_horizontal_parent_background {
+            background: #ffffff00;
+            position: fixed;
+            left: 2vmin;
+            bottom: -120px;
+            height: 13vmin;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .subcat_vertical_parent {
+            z-index: 2;
+            background: #00000000 !important;
+            display: flex;
+            flex-direction: column;
+            /* or 'row', 'row dense', 'column dense' */
+            width: 100%;
+            height: 100%;
+        }
+
+        .subcat_vertical_parent_background {
+            background: #ffffff00;
+            position: fixed;
+            top: 1vmin;
+            left: -100px;
+            bottom: 1vmin;
+            height: 100%;
+            width: 13vmin;
+            z-index: 2;
+        }
+
+        .filter_category_title {
+            z-index: 2;
+            border: 1px solid #ffffff00 !important;
+            background: #00000000 !important;
+            text-align: center;
+            color: #ffffffff;
+            font-size: 12px;
+            padding-top: 1px;
+        }
+
+        .background {
+            background: #00996600 !important;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            height: 100%;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .scroll_container_portrait {
+            background: #00996600 !important;
+            width: 100%;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            white-space: nowrap;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .recorder-container-ffc-portrait {
+            position: fixed;
+            width: 14vmin;
+            height: 14vmin;
+            max-width: 14vmin;
+            max-height: 14vmin;
+            bottom: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            transition: 0.5s opacity;
+        }
+
+        .background_overlay {
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            height: 100%;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .splash_screen {
+            position: fixed;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-position: center;
+            z-index: 2;
+            left: 0px;
+            top: 0px;
+            height: 100%;
+            width: 100%;
+        }
+
+        .avoid-clicks {
+            pointer-events: none;
+        }
+
+        .hidden {
+            visibility: hidden;
+            display: none;
+        }
+
+        .hidden-ui {
+            visibility: hidden;
+            display: none;
+        }
+
+        .recorder-container {
+            visibility: hidden;
+            display: none;
+        }
+
+        #actionButton {
+            /* change color of action button */
+            background-color: #333333 !important;
+        }
+
+        body {
+            font-family: Helvetica, sans-serif;
+        }
+    </style>
+
+    <script>
+        var cdnPath = "https://xcitegeneral.azureedge.net/xeo/fan-filter-cam/";
+        // direct path to storage-- use this for debuging when you can't wait for a cdn purge
+        //var cdnPath = "https://xcitegeneral.blob.core.windows.net/xeo/fan-filter-cam/";
+
+        var appConfigFileName = "application-config.json";
+        var clientConfigFileName = "config.json";
+        var appConfigObj;
+        var clientConfigObj;
+
+        var scene;
+        var filters = [];
+        var lockOnOne = false;
+        var subCats = [];
+        var lockConfig = false;
+        var emojisAreOn = false;
+        var animalsAreOn = false;
+        var customArray = [];
+        var currentFilter = null;
+        var currentSceneModels = [];
+        var splashScreenShowTime = 0;
+        var sceneModelsDict = {}
+        var currentFilterStartPos;
+        var currentCenterPosition;
+        var currentCenterRotation;
+        var isShowingSplashScreen = true;
+        var modelsHaveCompletedIntro = false;
+        var soundHasStarted = false;
+        var modelToLoadFirst;
+        var layout = "horizontal";
+
+        var currentFilterBlendChild = null;
+        var depthMaskModel = null;
+        var currentFilterHasMouthMorph = false;
+        var currentFilterHasEyebrowMorph = false;
+        var currentFilterHasEyeBlinkMorph = false;
+        var currentFilterHasRollingEyesMorph = false;
+
+        var currentFilterEyebrowMinR = 0;
+        var currentFilterEyebrowMinL = 0;
+        var currentFilterEyebrowMaxR = 0;
+        var currentFilterEyebrowMaxL = 0;
+        var currentFilterEyebrowTolerance = 0.025;
+        var currentFilterEyebrowValue = 0;
+        var currentFilterEyebrowValueL = 0;
+
+        var currentFilterEyebrowMoveR = 0;
+        var currentFilterEyebrowMoveL = 0;
+        var browsGoingUp = false;
+        var direction = false;
+        var browAnimationStarted = false;
+        var browAnimationReadyToReverse = false;
+
+        var eyeBlinkCounter = 0;
+        var isBlinking = true;
+        var toungeIsOut = false;
+
+        var overlayPortraitImage;
+        var overlayLandscapeImage;
+
+        var screenIsMirrored = true;
+        var receivedConfigMessage = false;
+
+        var cameraIsFront = true;
+        var isPreview = false;
+        var hasInit = false;
+
+        var isDesktopBuild = false;
+        var configData;
+
+        var configObject;
+        var filtersMap = new Map();
+        var filterLocked = false;
+
+        var currentPosition = 0.0;
+
+        var currentRotation = 0.0;
+
+        var currentScale = 0.0;
+
+        var historyPosition = [];
+        var historyRotation = [];
+        var historyScale = [];
+        var max = 5;
+        var lastUpdate = Date.now();
+        const perfectFrameTime = 1000 / 60;
+        var fraction = 0.0;
+        var speed = 0.05;
+        var moveFilter = false;
+        var p0 = 0.0;
+        var pL = 0.0;
+        var r0 = 0.0;
+        var rL = 0.0;
+
+        var allowHamFighters = false;
+        var allowSeibuLions = false;
+        var allowOrixBuffaloes = false;
+        var allowHoustonTexans = false;
+        var allowWakeForest = false;
+        var allowUGA = false;
+        var allowUTA = false;
+        var allowUOD = false;
+
+        var hideUIBool;
+        var clientList = [];
+
+        window.addEventListener('message', (message) => {
+            if (!message.data) {
+                return;
+            }
+
+            const {
+                id,
+                event,
+                data
+            } = message.data;
+
+            if (!event)
+                return;
+
+            switch (event) {
+
+                case "config": {
+                    if (lockConfig) return;
+                    receivedConfigMessage = true;
+                    if (data !== undefined) {
+                        configData = data;
+                        lockConfig = true;
+                    }
+                    break;
+                }
+                case "state": {
+                    if (data !== undefined) {
+                        //console.log("state", data);
+                    }
+                    break;
+                }
+                case "user": {
+                    if (data !== undefined) {
+                        // console.log("user", data);
+                        isPreview = data.preview;
+                        receivedConfigMessage = true;
+                    }
+                    break;
+                }
+                case "game_data": {
+                    if (data !== undefined) {
+                        // console.log("game_data", data);
+                    }
+                    break;
+                }
+                case "response": {
+                    if (data !== undefined) {
+                        // console.log("response", data);
+                    }
+                    break;
+                }
+            }
+        });
+
+        window.onload = () => {
+            parent.postMessage({
+                event: 'ready'
+            }, "*");
+
+            loadApplicationConfigFile();
+        };
+
+        function loadApplicationConfigFile() {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    appConfigObj = JSON.parse(this.responseText);
+                    startFaceTracker();
+                } else {
+                    // error handle not available
+                }
+            };
+            xmlhttp.open("GET", "./" + appConfigFileName, true);
+            xmlhttp.send();
+        }
+
+        function startFaceTracker() {
+            window.XR8 ? onxrloaded() : window.addEventListener('xrloaded', onxrloaded);
+        }
+
+        const onxrloaded = () => {
+            let windowPathString = window.location.href;
+
+            scene = document.querySelector('a-scene');
+            scene.addEventListener('realityready', () => {
+                if (!isShowingSplashScreen) {
+                    let button_record = document.getElementById("recorder");
+                    if (button_record !== null) {
+                        button_record.classList.remove('recorder-container');
+                        button_record.classList.add('recorder-container-ffc-portrait');
+                    }
+                }
+            });
+
+            const foundFace = ({
+                detail
+            }) => {
+                const {
+                    id,
+                    transform,
+                    attachmentPoints,
+                    vertices,
+                    normals
+                } = detail;
+
+                currentCenterPosition = new THREE.Vector3(transform.position.x, transform.position.y, transform.position.z);
+                currentCenterRotation = new THREE.Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+
+                if (!lockOnOne) {
+                    lockOnOne = true;
+                }
+
+                if (currentFilter === null) return;
+            }
+
+            const updateFace = ({
+                detail
+            }) => {
+                const {
+                    id,
+                    transform,
+                    attachmentPoints,
+                    vertices,
+                    normals
+                } = detail;
+
+                if (currentFilter === null) return;
+
+                if (!isShowingSplashScreen && !modelsHaveCompletedIntro) {
+                    currentFilter.setAttribute('animation-mixer', { startFrame: 0 });
+                    currentFilter.setAttribute('animation-mixer', { timeScale: 1 });
+                }
+
+                if (currentSceneModels !== null) {
+                    for (var i = 0; i < currentSceneModels.length; i++) {
+                        if (!isShowingSplashScreen && !modelsHaveCompletedIntro) {
+                            if (currentSceneModels[i].hasAttribute('sound')) {
+                                currentSceneModels[i].components.sound.playSound();
+                                continue;
+                            }
+
+                            currentSceneModels[i].setAttribute('animation-mixer', { startFrame: 0 });
+                            currentSceneModels[i].setAttribute('animation-mixer', { timeScale: 1 });
+
+                            if (currentSceneModels[i].hasAttribute('animatetoposition')) {
+                                let atp = parseJsonVector3Floats(currentSceneModels[i].getAttribute('animatetoposition'));
+                                gsap.to(currentSceneModels[i].object3D.position, { x: atp[0], y: atp[1], z: atp[2], duration: 7, ease: "back.out(1.5)", delay: 0.5 });
+                                continue;
+                            }
+                        }
+                        if (currentSceneModels[i].hasAttribute('sound')) {
+                            continue;
+                        }
+
+                        let ptpVec3 = parseJsonVector3Floats(currentSceneModels[i].getAttribute('ptp'));
+                        let rtpVec3 = parseJsonVector3Floats(currentSceneModels[i].getAttribute('rtp'));
+
+                        let objModel = currentSceneModels[i].object3D;
+                        let posVec3 = new THREE.Vector3(currentSceneModels[i].object3D.position.x + ((transform.position.x - currentCenterPosition.x) * ptpVec3[0]), currentSceneModels[i].object3D.position.y + ((transform.position.y - currentCenterPosition.y) * ptpVec3[1]), currentSceneModels[i].object3D.position.z + ((transform.position.z - currentCenterPosition.z) * ptpVec3[2]));
+                        currentSceneModels[i].object3D.position.copy((posVec3));
+
+                        let quaternion = new THREE.Quaternion();
+                        quaternion.set((transform.rotation.x * rtpVec3[0]), (transform.rotation.y * rtpVec3[1]), (transform.rotation.z * rtpVec3[2]), (transform.rotation.w * rtpVec3[3]));
+                        currentSceneModels[i].object3D.quaternion.copy(quaternion);
+                    }
+                }
+                modelsHaveCompletedIntro = true;
+                currentCenterPosition = new THREE.Vector3(transform.position.x, transform.position.y, transform.position.z);
+
+                if (currentFilter.hasAttribute("simple3drotation")) {
+                    if (currentFilter.getAttribute("simple3drotation") === 'true') {
+                        var rX = 0.0;
+                        var rY = 1.0;
+                        var rZ = 0.0;
+                        var rW = 0.0;
+                        let r = new THREE.Quaternion(rX, rY, rZ, rW);
+                        currentFilter.object3D.quaternion.copy(r);
+                    }
+                }
+            }
+            scene.addEventListener('xrfacefound', foundFace);
+            scene.addEventListener('xrfaceupdated', updateFace);
+
+            init();
+        }
+
+        function init() {
+            if (hasInit) return;
+            hasInit = true;
+
+            document.onkeyup = function (e) {
+                if (e.which == 72) {
+                    hideUI();
+                }
+
+                if (e.which == 83) {
+                    flipScreenHorizontal();
+                }
+            }
+
+            if (checkForConfigMessage()) {
+                console.log("configData:", configData);
+                if (configData.filters !== undefined) {
+                    if (configData.filters.emoji !== undefined) {
+                        emojisAreOn = configData.filters.emoji;
+                    }
+
+                    if (configData.filters.animal !== undefined) {
+                        animalsAreOn = configData.filters.animal;
+                    }
+
+                    if (allowHamFighters) {
+                        if (configData.filters.custom !== undefined) {
+                            customArray = configData.filters.custom;
+                        }
+                    }
+                } else if (configData.custom !== undefined) {
+                    if (configData.custom["filter-1"] !== undefined) {
+                        emojisAreOn = configData.custom["filter-1"];
+                    }
+
+                    if (configData.custom["filter-2"] !== undefined) {
+                        animalsAreOn = configData.custom["filter-2"];
+                    }
+
+                    if (allowHamFighters) {
+                        customArray = [0];
+                    }
+                }
+
+                // not sure if we need a Sponsor Portrait / Landscape here???
+                /*if (configData.images.sponsorPortrait !== undefined) {
+                    overlayPortraitImage = configData.images.sponsorPortrait;
+
+                    let overlayBackgroundContainer = document.getElementById("overlayBackgroundContainer");
+                    overlayBackgroundContainer.style.backgroundImage = "url('" + overlayPortraitImage + "')";
+                }
+
+                if (configData.images.sponsorLandscape !== undefined) {
+                    overlayLandscapeImage = configData.images.sponsorLandscape;
+                }*/
+            }
+
+            let urlParams = new URLSearchParams(window.location.search);
+            const result = urlParams.get('gcClientId');
+            let idTest = false;
+            if (result !== undefined) {
+                for (var id = 0; id < appConfigObj.clients.length; id++) {
+                    if (result === appConfigObj.clients[id].id) {
+                        console.log('* Client ID Match Found:', appConfigObj.clients[id].id);
+                        idTest = true;
+                        loadClientConfigFiles(appConfigObj.clients[id].packs);
+                        break;
+                    }
+                }
+            }
+
+            let pathTest = false;
+            if (!idTest) {
+                const windowPathString = window.location.href;
+                for (var wd = 0; wd < appConfigObj.clients.length; wd++) {
+                    // add the dot at the end to ensure it searches correctly
+                    let stringCheck = windowPathString.search(appConfigObj.clients[wd].id + '.');
+                    if (stringCheck > -1) {
+                        console.log('* Client ID Match Found:', appConfigObj.clients[wd].id);
+                        pathTest = true;
+                        loadClientConfigFiles(appConfigObj.clients[wd].packs);
+                        break;
+                    }
+                }
+            }
+
+            if (!idTest && !pathTest) {
+                // run default-- no client ID available or client ID not registered
+                loadClientConfigFiles(['emojis', 'animals']);
+            }
+        }
+
+        function loadClientConfigFiles(filterCategorys) {
+            let xmlhttp = new XMLHttpRequest();
+            var clientCounter = 0;
+            xmlhttp.open("GET", cdnPath + filterCategorys[clientCounter] + "/" + clientConfigFileName, true);
+            xmlhttp.send();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    clientConfigObj = JSON.parse(this.responseText);
+                    clientList[clientCounter] = JSON.parse(this.responseText);
+                    if (clientCounter === filterCategorys.length - 1) {
+                        addUI();
+                    } else {
+                        clientCounter++;
+                        loadClientConfigFiles(filterCategorys);
+                    }
+                } else if (this.readyState == 4 && this.status == 404) {
+                    // error handle not available
+                    console.log('Error: No config.json file found on server for clientID', filterCategorys[clientCounter]);
+                    if (clientCounter === filterCategorys.length - 1) {
+                        console.log(`Could not find one or more config files-- loading anyway...`);
+                        addUI();
+                    } else {
+                        clientCounter++;
+                        loadClientConfigFiles(filterCategorys);
+                    }
+                }
+            };
+        }
+
+        function addUI() {
+            // move this**********************
+            depthMaskModel = document.getElementById("depthmask_model");
+
+            for (let cid = 0; cid < clientList.length; cid++) {
+                const button = document.createElement('div');
+                button.id = clientList[cid].id + 'Button'
+                button.className = 'filter_category_button_new';
+
+                const divCont = document.createElement('div');
+                divCont.className = 'filter_category_container_new avoid-clicks';
+                divCont.id = clientList[cid].id + 'ButtonContainer';
+
+                const divTitle = document.createElement('div');
+                divTitle.className = 'filter_category_title';
+                divTitle.innerHTML = clientList[cid].title;
+
+                button.appendChild(divCont);
+                //button.appendChild(divTitle);
+
+                document.getElementById('scrollContainer').appendChild(button);
+                button.addEventListener("click", buttonClick);
+                button.name = clientList[cid].id + "_subcat";
+                subCats.push(button.name);
+
+                addIcon(0, divCont.id, cdnPath + clientList[cid].id + "/icons/" + clientList[cid].icon);
+
+                const subCatDiv = document.createElement('div');
+                subCatDiv.id = clientList[cid].id + '_subcat';
+                document.getElementById('subFilterBackgroundContainer').appendChild(subCatDiv);
+
+                // Set layout-- only effects filter icon placement                
+                if (clientList[cid].layout !== undefined) {
+                    layout = clientList[cid].layout;
+                }
+
+                // Setting capture-button  
+                let captureButtonElement = document.querySelector('xrextras-capture-button');
+                // Set default to photo / video with standard. [standard, photo, fixed]
+                let captureButtonSetting = 'standard';
+                // If it exists in config, and it's set to photo or fixed-- read it to variable and set the attribute.  
+                if (clientList[cid].captureButton !== undefined) {
+                    if (clientList[cid].captureButton === "photo" || clientList[cid].captureButton === "fixed") {
+                        captureButtonSetting = clientList[cid].captureButton;
+                    }
+                }
+                captureButtonElement.setAttribute('capture-mode', captureButtonSetting);
+                
+                const filterModelsDiv = document.createElement('div');
+                filterModelsDiv.id = clientList[cid].id + '_model';
+                if (layout === "vertical") {
+                    filterModelsDiv.className = 'subcat_vertical_parent';
+                    let layoutContainer = document.getElementById("subFilterBackgroundContainer");
+                    layoutContainer.classList.remove('subcat_horizontal_parent_background');
+                    layoutContainer.classList.add('subcat_vertical_parent_background');
+                } else {
+                    filterModelsDiv.className = 'subcat_horizontal_parent';
+                }
+                subCatDiv.appendChild(filterModelsDiv);
+
+                // Set the Splash Screen or hidden
+
+                let splashScreen = document.getElementById("splashScreen");
+                if (clientList[cid].splashScreen !== undefined) {
+                    splashScreen.style.backgroundImage = "url('" + clientList[cid].splashScreen + "')";
+                    if (clientList[cid].splashScreenShowTime !== undefined) {
+                        splashScreenShowTime = clientList[cid].splashScreenShowTime;
+                    }
+                } else {
+                    splashScreen.classList.add('hidden');
+                }
+
+                for (var i = 0; i < clientList[cid].filters.length; i++) {
+                    let filter = clientList[cid].filters[i];
+                    let modelName = clientList[cid].id + "_model_" + i;
+
+                    if (i === 0) {
+                        modelToLoadFirst = modelName;
+                    }
+
+                    let texturePath;
+                    let modelPath;
+                    if (filter.model !== undefined) {
+                        modelPath = "url(" + cdnPath + clientList[cid].id + "/models/" + filter.model + ")";
+                    }
+
+                    let face = document.querySelector('xrextras-faceanchor');
+                    let nose = document.querySelector('xrextras-face-attachment');
+                    let mod = document.createElement('a-entity');
+                    mod.setAttribute('id', modelName);
+                    mod.setAttribute('scale', filter.scale);
+                    mod.setAttribute('rotation', filter.rotation);
+                    mod.setAttribute('position', filter.position);
+
+                    if (filter.depthmask !== undefined) {
+                        mod.setAttribute('usedepthmask', filter.depthmask);
+                    } else {
+                        mod.setAttribute('usedepthmask', false);
+                    }
+
+                    if (filter.model !== undefined) {
+                        mod.setAttribute('gltf-model', modelPath);
+                        mod.setAttribute('animation-mixer', 'clip: *; loop: repeat; timeScale: 0');
+                    }
+
+                    if (filter.cubeMapPath !== undefined) {
+                        mod.setAttribute('cube-env-map', 'path: ' + filter.cubeMapPath + '; extension: png');
+                    }
+
+                    if (filter.simple3drotation !== undefined) {
+                        mod.setAttribute('simple3drotation', filter.simple3drotation);
+                    } else {
+                        mod.setAttribute('simple3drotation', false);
+                    }
+
+                    mod.setAttribute('visible', false);
+
+                    if (filter.texture !== undefined) {
+                        texturePath = cdnPath + clientList[cid].id + "/textures/" + filter.texture;
+
+                        let textureResource = document.createElement('xrextras-resource');
+                        textureResource.setAttribute('id', modelName + '_resource');
+                        textureResource.setAttribute('src', texturePath);
+                        scene.appendChild(textureResource);
+
+                        let textureMaterial = document.createElement('xrextras-basic-material');
+                        textureMaterial.setAttribute('id', modelName + '_material');
+                        textureMaterial.setAttribute('tex', '#' + modelName + '_resource');
+                        textureMaterial.setAttribute('alpha', '#alpha');
+                        textureMaterial.setAttribute('opacity', '.9');
+                        scene.appendChild(textureMaterial);
+
+                        let faceMesh = document.createElement('xrextras-face-mesh');
+                        faceMesh.setAttribute('material-resource', '#' + modelName + '_material');
+                        mod.appendChild(faceMesh);
+                    }
+
+                    // attachment point for filter...
+                    if (filter.attachTo !== undefined) {
+                        if (filter.attachTo === 'face') {
+                            face.appendChild(mod);
+                        } else if (filter.attachTo === 'scene') {
+                            scene.appendChild(mod);
+                        } else {
+                            nose.appendChild(mod);
+                        }
+                    } else {
+                        nose.appendChild(mod);
+                    }
+
+                    addButton(i, clientList[cid].id + "_model", cdnPath + clientList[cid].id + "/icons/" + filter.icon);
+
+                    if (filter.sceneModels !== undefined) {
+                        sceneModelsDict[modelName] = [];
+                        for (var j = 0; j < filter.sceneModels.length; j++) {
+                            let modelconfig = filter.sceneModels[j];
+                            let sm;
+
+                            if (modelconfig.model !== undefined) {
+                                let scenemodelPath = "url(" + cdnPath + clientList[cid].id + "/models/" + modelconfig.model + ")";
+                                sm = document.createElement('a-entity');
+
+                                sm.setAttribute('gltf-model', scenemodelPath);
+                                sm.setAttribute('animation-mixer', 'clip: *; loop: repeat; timeScale: 0');
+
+                                if (modelconfig.cubeMapPath != undefined) {
+                                    sm.setAttribute('cube-env-map', 'path: ' + modelconfig.cubeMapPath + '; extension: png');
+                                }
+                            } else if (modelconfig.texture !== undefined) {
+                                sm = document.createElement('a-plane');
+                                sm.setAttribute('material', 'src: ' + modelconfig.texture + '; transparent: true');
+                            } else if (modelconfig.sound !== undefined) {
+                                sm = document.createElement('a-sound');
+                                sm.setAttribute('src', 'src: url(' + modelconfig.sound + ')');
+                                sm.setAttribute('autoplay', 'false');
+                                sm.setAttribute('loop', 'true');
+                                sm.setAttribute('volume', '0.8');
+                            } else {
+                                sm = document.createElement('a-entity');
+                            }
+
+                            sm.setAttribute('id', modelconfig.id);
+                            sm.setAttribute('scale', modelconfig.scale);
+                            sm.setAttribute('rotation', modelconfig.rotation);
+                            sm.setAttribute('position', modelconfig.startposition);
+                            sm.setAttribute('startposition', modelconfig.startposition);
+
+                            if (modelconfig.positionTrackPercent === undefined) {
+                                sm.setAttribute('ptp', '0 0 0');
+                            } else {
+                                sm.setAttribute('ptp', modelconfig.positionTrackPercent);
+                            }
+
+                            if (modelconfig.rotationTrackOnOff === undefined) {
+                                sm.setAttribute('rtp', '0 0 0 0');
+                            } else {
+                                sm.setAttribute('rtp', modelconfig.rotationTrackOnOff);
+                            }
+
+                            if (modelconfig.animateToPosition !== undefined) {
+                                sm.setAttribute('animatetoposition', modelconfig.animateToPosition);
+                            }
+                            sm.setAttribute('visible', false);
+
+                            scene.appendChild(sm);
+                            sceneModelsDict[modelName][j] = sm;
+                        }
+                    }
+                }
+            }
+
+            //let cameraButton = document.getElementById("cameraSwitchButton");
+            //cameraButton.addEventListener("click", cameraSwitchHandler);
+
+            if (isDesktopBuild) {
+                let captureButton = document.getElementById("capture_button");
+                if (captureButton !== null) scene.removeChild(captureButton);
+            }
+
+            if (!isPreview) {
+                startXrface();
+            }
+        }
+
+        function startXrface() {
+            if (isPreview) return;
+            let direction = "front";
+            scene.setAttribute('xrextras-almost-there');
+            scene.setAttribute('xrextras-runtime-error');
+            scene.setAttribute('xrface', 'mirroredDisplay: ' + screenIsMirrored + ';  meshGeometry: eyes, face, mouth; cameraDirection: ' + direction + '; allowedDevices: any; scale: absolute;');
+            scene.setAttribute('scene-ready');
+
+            // let previewBackgroundContainer = document.getElementById("previewBackgroundContainer");
+            // previewBackgroundContainer.classList.add('hidden');
+            setTimeout(function () {
+                addFilterByName(modelToLoadFirst);
+
+                let splashScreen = document.getElementById("splashScreen");
+                splashScreen.classList.add('hidden');
+                let button_record = document.getElementById("recorder");
+                if (button_record !== null) {
+                    button_record.classList.remove('recorder-container');
+                    button_record.classList.add('recorder-container-ffc-portrait');
+                }
+                isShowingSplashScreen = false;
+
+                let uiAnimationDistance = 132;
+                if (layout === "vertical") {
+                    gsap.to(".subcat_vertical_parent_background", { duration: 1, x: uiAnimationDistance, delay: 4 });
+                } else {
+                    gsap.to(".subcat_horizontal_parent_background", { duration: 1, y: 0 - uiAnimationDistance, delay: 4 });
+                }
+                gsap.to(".recorder-container-ffc-portrait", { duration: 1, y: 0 - uiAnimationDistance, delay: 4 });
+
+            }, splashScreenShowTime * 1000);
+        }
+
+        function updateBlendshapes(attachmentPoints, transform) {
+
+            if (currentFilterBlendChild === null) return;
+
+            if (currentFilterBlendChild.getAttribute('gltf-morph__ToungeOpen') !== null) {
+                //console.log('not null');
+                let toungeSpace = (attachmentPoints.upperLip.position.y - attachmentPoints.lowerLip.position.y) / 0.3;
+                if (toungeSpace > 1) toungeSpace = 1;
+                if (toungeSpace < 0) toungeSpace = 0;
+                if (!toungeIsOut && toungeSpace > 0.85) {
+                    //console.log('START TOUNGE');
+                    toungeIsOut = true;
+                    let toungeElement = document.getElementById("dog_tounge_model");
+                    toungeElement.setAttribute('visible', true);
+                    toungeElement.setAttribute('animation-mixer', {
+                        timeScale: 1
+                    });
+                }
+            }
+
+            if (currentFilterHasMouthMorph) {
+                let space = (attachmentPoints.upperLip.position.y - attachmentPoints.lowerLip.position.y) / 0.3;
+                if (space > 1) space = 1;
+                if (space < 0) space = 0;
+                currentFilterBlendChild.setAttribute('gltf-morph__JawOpen', {
+                    morphtarget: 'JawOpen',
+                    value: space
+                });
+
+                currentFilterBlendChild.setAttribute('gltf-morph__MouthSmile_R', {
+                    morphtarget: 'MouthSmile_R',
+                    value: space
+                });
+
+                currentFilterBlendChild.setAttribute('gltf-morph__MouthSmile_L', {
+                    morphtarget: 'MouthSmile_L',
+                    value: space
+                });
+            }
+
+            if (currentFilterHasEyebrowMorph) {
+                let rightDistance = roundTo4(attachmentPoints.rightEyebrowMiddle.position.y - attachmentPoints.rightEye.position.y);
+
+                let leftDistance = roundTo4(attachmentPoints.leftEyebrowMiddle.position.y - attachmentPoints.leftEye.position.y);
+
+                if (currentFilterEyebrowValue === 0) {
+                    currentFilterEyebrowValue = rightDistance;
+                }
+
+                let shiftTolerance = 0.0015;
+                let averageDistance = (rightDistance + leftDistance) / 2;
+
+                if (currentFilterEyebrowValue === 0) {
+                    currentFilterEyebrowValue = averageDistance;
+                }
+
+                //console.log(rightDistance, currentFilterEyebrowValue);
+
+                if (averageDistance > currentFilterEyebrowValue + shiftTolerance) {
+                    if (browsGoingUp) {
+                        currentFilterEyebrowMoveR = currentFilterEyebrowMoveR + 0.26;
+                    }
+                    browsGoingUp = true;
+                } else if (averageDistance < currentFilterEyebrowValue - shiftTolerance) {
+                    if (!browsGoingUp) {
+                        currentFilterEyebrowMoveR = currentFilterEyebrowMoveR - 0.26;
+                    }
+                    browsGoingUp = false;
+                }
+                currentFilterEyebrowValue = averageDistance;
+
+                if (currentFilterEyebrowMoveR < 0) {
+                    currentFilterEyebrowMoveR = 0;
+                } else if (currentFilterEyebrowMoveR > 1) {
+                    currentFilterEyebrowMoveR = 1;
+                }
+
+                //console.log("browsGoingUp", browsGoingUp, currentFilterEyebrowMoveR);
+                //console.log(" ");
+
+                if (!browAnimationStarted) {
+                    if (!browAnimationReadyToReverse && browsGoingUp && currentFilterEyebrowMoveR > 0.75) {
+                        browAnimationStarted = true;
+                        direction = true;
+                        browAnimationReadyToReverse = false;
+                        currentFilterBlendChild.dispatchEvent(new CustomEvent('startEyebrowAnimation'));
+                    }
+
+                    if (browAnimationReadyToReverse && !browsGoingUp && currentFilterEyebrowMoveR < 0.75) {
+                        browAnimationStarted = true;
+                        currentFilterBlendChild.dispatchEvent(new CustomEvent('startEyebrowAnimation'));
+                    }
+                }
+                /*  currentFilter.setAttribute('gltf-morph__BrowsInnerUp', {
+                      morphtarget: 'BrowsInnerUp',
+                      value: currentFilterEyebrowMoveR
+                  });*/
+            }
+
+            if (currentFilterBlendChild.getAttribute('gltf-morph__EyeBlink_L') !== null) {
+                if (!isBlinking) {
+                    eyeBlinkCounter++;
+                    if (eyeBlinkCounter > 75) {
+                        isBlinking = true;
+                        currentFilterBlendChild.setAttribute('animation__2', {
+                            dir: 'normal'
+                        });
+                        currentFilterBlendChild.setAttribute('animation__3', {
+                            dir: 'normal'
+                        });
+                        currentFilterBlendChild.dispatchEvent(new CustomEvent('startBlinkAnimation'));
+                        eyeBlinkCounter = 0;
+                    }
+                }
+            }
+
+            if (currentFilterBlendChild.getAttribute('gltf-morph__RightEyeHorizontal') !== null) {
+                currentFilterBlendChild.setAttribute('gltf-morph__RightEyeHorizontal', {
+                    morphtarget: 'RightEyeHorizontal',
+                    value: (transform.rotation.w / 0.5)
+                }); // RightEyeHorizontal
+            }
+            if (currentFilterBlendChild.getAttribute('gltf-morph__RightEyeVertical') !== null) {
+                currentFilterBlendChild.setAttribute('gltf-morph__RightEyeVertical', {
+                    morphtarget: 'RightEyeVertical',
+                    value: 0 - (transform.rotation.z / 0.5)
+                }); // RightEyeVertical
+            }
+
+            if (currentFilterBlendChild.getAttribute('gltf-morph__LeftEyeHorizontal') !== null) {
+                currentFilterBlendChild.setAttribute('gltf-morph__LeftEyeHorizontal', {
+                    morphtarget: 'LeftEyeHorizontal',
+                    value: (transform.rotation.w / 0.5)
+                }); // LeftEyeSide
+            }
+
+            if (currentFilterBlendChild.getAttribute('gltf-morph__LeftEyeVertical') !== null) {
+                currentFilterBlendChild.setAttribute('gltf-morph__LeftEyeVertical', {
+                    morphtarget: 'LeftEyeVertical',
+                    value: 0 - (transform.rotation.z / 0.5)
+                }); // LeftEyeVert
+            }
+        }
+
+        function addButton(index, container, icon) {
+            const div = document.createElement('div');
+            div.className = 'subfilter_button';
+            div.innerHTML = '<div id="emoji_' + index + '" class="subfilter_button_icon avoid-clicks" style="background: #e9e9e900 url(' + icon + ') 0px 0px/12vmin 12vmin no-repeat;"></div>';
+            document.getElementById(container).appendChild(div);
+            div.name = container + "_" + index;
+            div.addEventListener("click", filterButtonClick);
+        }
+
+        function addIcon(index, container, icon) {
+            const div = document.createElement('div');
+            div.className = 'filter-button';
+            div.innerHTML = '<div id="emoji_' + index + '" class="filter_button_icon" style="background: #e9e9e900 url(' + icon + ') 0px 0px/12vmin 12vmin no-repeat;"></div>';
+            document.getElementById(container).appendChild(div);
+        }
+
+        function buttonClick(e) {
+            if (e.target.name === undefined) return;
+            setFiltersInvisible(e.target.name);
+            let subcat = document.getElementById(e.target.name);
+            let subcatArrow = document.getElementById(e.target.name + "_arrow");
+            /*if (subcat.classList.contains('hidden')) {
+                subcat.classList.remove('hidden');
+            } else {
+                subcat.classList.add('hidden');
+            }*/
+        }
+
+        function filterButtonClick(e) {
+            if (e.target.name === undefined) return;
+            addFilterByName(e.target.name);
+        }
+
+        function addFilterByName(name) {
+            if (currentFilter === document.getElementById(name)) {
+                return;
+            }
+
+            if (currentFilter !== null) {
+                currentFilter.setAttribute('animation-mixer', { timeScale: 0 });
+                currentFilter.setAttribute('visible', false);
+            }
+
+            if (currentSceneModels !== null) {
+                for (var i = 0; i < currentSceneModels.length; i++) {
+
+                    currentSceneModels[i].setAttribute('animation-mixer', { timeScale: 0 });
+                    if (currentSceneModels[i].hasAttribute('animatetoposition')) {
+                        let pos = parseJsonVector3Floats(currentSceneModels[i].getAttribute('startposition'));
+                        currentSceneModels[i].object3D.position.x = pos[0];
+                        currentSceneModels[i].object3D.position.y = pos[1];
+                        currentSceneModels[i].object3D.position.z = pos[2];
+                    }
+                    if (currentSceneModels[i].hasAttribute('sound')) {
+                        currentSceneModels[i].components.sound.stopSound();
+                    }
+                    currentSceneModels[i].setAttribute('visible', false);
+                }
+                currentSceneModels = null;
+            }
+            setFiltersInvisible("");
+
+            currentFilter = document.getElementById(name);
+            var usedepthmask = currentFilter.getAttribute('usedepthmask');
+            let depthmaskHead = document.getElementById("depthmask_head");
+            let depthmaskBody = document.getElementById("depthmask_body");
+            if (usedepthmask === "true") {
+                depthmaskHead.setAttribute('visible', true);
+                depthmaskBody.setAttribute('visible', true);
+            } else {
+                depthmaskHead.setAttribute('visible', false);
+                depthmaskBody.setAttribute('visible', false);
+            }
+            modelsHaveCompletedIntro = false;
+            currentFilter.setAttribute('visible', true);
+            if (sceneModelsDict[name] !== undefined) {
+                currentSceneModels = sceneModelsDict[name];
+                for (var i = 0; i < currentSceneModels.length; i++) {
+                    currentSceneModels[i].setAttribute('visible', true);
+                }
+            } else {
+                currentSceneModels = null;
+            }
+        }
+
+        function setFiltersInvisible(nameOfVisibleFilter) {
+            for (var i = 0; i < subCats.length; i++) {
+                if (nameOfVisibleFilter == subCats[i]) continue;
+                let subcat = document.getElementById(subCats[i]);
+                let subcatArrow = document.getElementById(subCats[i] + "_arrow");
+                /*if (!subcat.classList.contains('hidden')) {
+                    subcat.classList.add('hidden');
+                }*/
+            }
+        }
+
+        function flipScreenHorizontal() {
+            if (screenIsMirrored) screenIsMirrored = false;
+            else screenIsMirrored = true;
+
+            scene.removeAttribute('xrface');
+            scene.setAttribute('xrface', 'mirroredDisplay: ' + screenIsMirrored + ';  meshGeometry: eyes, face, mouth; cameraDirection: ' + direction + '; allowedDevices: any;');
+        }
+
+        function cameraSwitchHandler(e) {
+            if (currentFilter !== null) currentFilter.setAttribute('visible', false);
+
+            let captureButtonElement = document.getElementById("capture_button");
+            if (captureButtonElement !== null) scene.removeChild(captureButtonElement);
+
+            let captureConfigElement = document.getElementById("capture_config");
+            if (captureConfigElement !== null) scene.removeChild(captureConfigElement);
+
+            let capturePreviewElement = document.getElementById("capture_preview");
+            if (capturePreviewElement !== null) scene.removeChild(capturePreviewElement);
+
+            let direction = "front";
+            if (cameraIsFront) {
+                direction = "back";
+                cameraIsFront = false;
+            } else {
+                direction = "front";
+                cameraIsFront = true;
+            }
+            scene.removeAttribute('xrface');
+            scene.setAttribute('xrface', 'mirroredDisplay: ' + screenIsMirrored + ';  meshGeometry: eyes, face, mouth; cameraDirection: ' + direction + '; allowedDevices: any;');
+
+            if (!isDesktopBuild) {
+                var captureButtonNew = document.createElement('xrextras-capture-button');
+                scene.appendChild(captureButtonNew);
+                captureButtonNew.setAttribute('id', 'capture_button');
+                captureButtonNew.setAttribute('capture-mode', 'standard');
+            }
+            var captureConfigNew = document.createElement('xrextras-capture-config');
+            scene.appendChild(captureConfigNew);
+            captureConfigNew.setAttribute('id', 'capture_config');
+            captureConfigNew.setAttribute('file-name-prefix', 'fan-filter-cam-image-');
+
+            var capturePreviewNew = document.createElement('xrextras-capture-preview');
+            scene.appendChild(capturePreviewNew);
+            capturePreviewNew.setAttribute('id', 'capture_preview');
+        }
+
+        function checkForConfigMessage() {
+            let isConfig = true;
+            if (configData === undefined) {
+                emojisAreOn = true;
+                animalsAreOn = true;
+                isConfig = false;
+                //customArray = [0];
+            }
+            return isConfig;
+        }
+
+        function verifyBlendshapes() {
+            if (currentFilterBlendChild === null) return;
+
+            if (currentFilterBlendChild.getAttribute('gltf-morph__JawOpen') !== null) {
+                currentFilterHasMouthMorph = true;
+                currentFilterBlendChild.setAttribute('gltf-morph__JawOpen', {
+                    morphtarget: 'JawOpen',
+                    value: 1
+                });
+            } else {
+                currentFilterHasMouthMorph = false;
+            }
+
+            if (currentFilterBlendChild.getAttribute('gltf-morph__ToungeOpen') !== null) {
+                toungeIsOut = false;
+                let toungeElement = document.getElementById("dog_tounge_model");
+                toungeElement.addEventListener('animation-loop', function (e) {
+                    toungeIsOut = false;
+                    toungeElement.setAttribute('animation-mixer', {
+                        timeScale: 0
+                    });
+                    toungeElement.setAttribute('visible', false);
+                });
+            }
+
+            if (currentFilterBlendChild.getAttribute('gltf-morph__BrowsInnerUp') !== null) {
+                currentFilterHasEyebrowMorph = true;
+                currentFilterEyebrowMoveR = 0;
+                currentFilterEyebrowMoveL = 0;
+                currentFilterBlendChild.addEventListener('animationcomplete', function (e) {
+                    if (direction) {
+                        currentFilterBlendChild.setAttribute('animation', {
+                            dir: 'reverse'
+                        });
+                        currentFilterBlendChild.setAttribute('animation__BrowsU_R', {
+                            dir: 'reverse'
+                        });
+                        currentFilterBlendChild.setAttribute('animation__BrowsU_L', {
+                            dir: 'reverse'
+                        });
+                        direction = false;
+                        browAnimationReadyToReverse = true;
+                    } else {
+                        currentFilterBlendChild.setAttribute('animation', {
+                            dir: 'normal'
+                        });
+                        currentFilterBlendChild.setAttribute('animation__BrowsU_L', {
+                            dir: 'normal'
+                        });
+                        currentFilterBlendChild.setAttribute('animation__BrowsU_R', {
+                            dir: 'normal'
+                        });
+                        direction = true;
+                        browAnimationReadyToReverse = false;
+                    }
+                    browAnimationStarted = false;
+                });
+
+            } else {
+                currentFilterHasEyebrowMorph = false;
+            }
+
+            if (currentFilterBlendChild.getAttribute('gltf-morph__EyeBlink_L') !== null) {
+                currentFilterHasEyeBlinkMorph = true;
+                currentFilterBlendChild.addEventListener('animationcomplete', function (e) {
+                    if (isBlinking) {
+                        currentFilterBlendChild.setAttribute('animation__2', {
+                            dir: 'reverse'
+                        });
+                        currentFilterBlendChild.setAttribute('animation__3', {
+                            dir: 'reverse'
+                        });
+                        currentFilterBlendChild.dispatchEvent(new CustomEvent('startBlinkAnimation'));
+                        isBlinking = false;
+                    }
+                });
+            } else {
+                currentFilterHasEyeBlinkMorph = false;
+
+            }
+
+            //console.log("currentFilterHasEyebrowMorph", currentFilterHasEyebrowMorph);
+        }
+
+        function hideUI() {
+            let backgroundContainer = document.getElementById("backgroundContainer");
+            let cameraSwitchButton = document.getElementById("cameraSwitchButton");
+
+            if (!hideUIBool) {
+                backgroundContainer.classList.add('hidden-ui');
+                cameraSwitchButton.classList.add('hidden-ui');
+
+                //let captureButton = document.getElementById("capture_button");
+                //if (captureButton !== null) scene.removeChild(captureButton);
+                hideUIBool = true;
+            } else {
+                backgroundContainer.classList.remove('hidden-ui');
+                cameraSwitchButton.classList.remove('hidden-ui');
+
+                // var captureButtonNew = document.createElement('xrextras-capture-button');
+                // scene.appendChild(captureButtonNew);
+                //captureButtonNew.setAttribute('id', 'capture_button');
+                //captureButtonNew.setAttribute('capture-mode', 'standard');
+
+                hideUIBool = false;
+            }
+        }
+
+        function roundTo4(num) {
+            return +(Math.round(num + "e+4") + "e-4");
+        }
+
+        AFRAME.registerComponent('rotation-off', {
+            init: function () { }
+        });
+
+        AFRAME.registerComponent('gltf-morph', {
+            multiple: true,
+            schema: {
+                morphtarget: {
+                    type: 'string',
+                    default: ''
+                },
+                value: {
+                    type: 'number',
+                    default: 0
+                },
+            },
+            init: function () {
+                this.el.addEventListener('object3dset', () => {
+                    this.morpher()
+                })
+            },
+            update: function () {
+                this.morpher()
+            },
+            morpher: function () {
+                const mesh = this.el.object3D
+                mesh.traverse((o) => {
+                    if (o.morphTargetInfluences && o.userData.targetNames) {
+                        const pos = o.userData.targetNames.indexOf(this.data.morphtarget)
+                        o.morphTargetInfluences[pos] = this.data.value
+                    }
+                })
+            },
+        });
+
+        function lerp(start, end, t) {
+            return start * (1 - t) + end * t
+        }
+
+        function parseJsonVector3Floats(str) {
+            return str.split(/[^\d.+-]+/).filter(Boolean).map(parseFloat);
+        }
+
+        //window.onload = init;
+
+    </script>
+</head>
+
+<body>
+    <div id="overlayBackgroundContainer" class="background_overlay"></div>
+    <div id="backgroundContainer" class="background">
+        <div id="filterBackgroundContainer" class="hidden">
+            <div id="scrollContainer" class="scroll_container_portrait">
+            </div>
+        </div>
+        <div id="subFilterBackgroundContainer" class="subcat_horizontal_parent_background">
+        </div>
+    </div>
+
+    <!--<div id='cameraSwitchButton' class="camera-switch-filter-button"></div>-->
+
+    <a-scene renderer="maxCanvasWidth: 1024; maxCanvasHeight: 1024">
+        <!--<a-camera><a-entity text="value: Fan Filter Cam;" position="0 0 -1"></a-entity></a-camera>-->
+        <a-assets timeout="30000">
+            <a-asset-item id="head-occluder"
+                src="https://xcitegeneral.azureedge.net/xeo/fan-filter-cam/alpha/head-occluder-v3.glb"></a-asset-item>
+            <a-asset-item id="body-occluder"
+                src="https://xcitegeneral.azureedge.net/xeo/fan-filter-cam/alpha/chest_mask.glb"></a-asset-item>
+        </a-assets>
+
+        <xrextras-resource id="alpha"
+            src="https://xcitegeneral.azureedge.net/xeo/fan-filter-cam/alpha/soft-eyes-mouth.png"> </xrextras-resource>
+        </xrextras-basic-material>
+
+        <xrextras-capture-button id="capture_button"></xrextras-capture-button>
+
+        <!--<xrextras-capture-config watermark-image-url=""
+            watermark-max-width="100"
+            watermark-max-height="20"
+            file-name-prefix="fan-filter-cam-image-"></xrextras-capture-config>-->
+
+        <xrextras-capture-config id="capture_config" file-name-prefix="fan-filter-cam-image-"></xrextras-capture-config>
+
+        <xrextras-capture-preview id="capture_preview"></xrextras-capture-preview>
+
+        <!--<a-camera position="0 1 2"></a-camera>-->
+        <a-camera position="0 1 1.5"></a-camera>
+
+        <xrextras-faceanchor>
+            <a-entity id="depthmask_head" gltf-model="#head-occluder" position="0 0.14 0" scale="1.15 1.15 1" visible="false" xrextras-hider-material>
+            </a-entity>
+            <a-entity id="depthmask_body" gltf-model="#body-occluder" scale="0.9 1 0.75" visible="false" position="0 0.2 0.9"
+                xrextras-hider-material>
+            </a-entity>
+            <xrextras-face-attachment point="noseBridge">
+            </xrextras-face-attachment>
+        </xrextras-faceanchor>
+        <a-entity light="type: ambient; color: #EEE; intensity: 0.6"></a-entity>
+        <a-entity light="type: directional; color: #FFF; intensity: 1;" position="-0.5 1 1"></a-entity>
+    </a-scene>
+    <div id="splashScreen" class="splash_screen"></div>
+</body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQ5GJH3" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+
+</html>
